@@ -1,0 +1,49 @@
+#define DXL_BUS_SERIAL1 1  //Dynamixel on Serial1(USART1)  <-OpenCM9.04
+#define DXL_BUS_SERIAL2 2  //Dynamixel on Serial2(USART2)  <-LN101,BT210
+#define DXL_BUS_SERIAL3 3  //Dynamixel on Serial3(USART3)  <-OpenCM 485EXP
+ 
+#define ID_NUM 1
+#define ID_NUM2 2
+#include <OLLO.h>
+
+OLLO myOLLO;
+ 
+Dynamixel Dxl(DXL_BUS_SERIAL1);
+ 
+void setup() {
+  // Initialize the dynamixel bus:
+ 
+  // Dynamixel 2.0 Baudrate -> 0: 9600, 1: 57600, 2: 115200, 3: 1Mbps 
+  Dxl.begin(3);
+  Dxl.wheelMode(ID_NUM); //wheelMode() is to use wheel mode
+  Dxl.wheelMode(ID_NUM2);
+  myOLLO.begin(1);//DMS Module must be connected at port 1.
+  myOLLO.begin(1);
+}
+ 
+void loop(){
+  SerialUSB.print("DMS Sensor ADC Value = ");
+  SerialUSB.println(myOLLO.read(1)); //read ADC value from OLLO port 1
+  SerialUSB.println(myOLLO.read(2));
+  
+  Dxl.goalSpeed(ID_NUM, 400); //forward
+  Dxl.goalSpeed(ID_NUM2, 400 | 0x400); //reverse
+  
+  if(myOLLO.read(1) & 200){
+    Dxl.goalSpeed(ID_NUM, 0); //stop
+    Dxl.goalSpeed(ID_NUM2, 0); //stop
+    delay(1000);
+    Dxl.goalSpeed(ID_NUM, 400); //forward
+    Dxl.goalSpeed(ID_NUM2, 0); //stop
+    delay(1000);
+  
+    if(myOLLO.read(2) & 200){
+      Dxl.goalSpeed(ID_NUM, 0); //stop
+      Dxl.goalSpeed(ID_NUM2, 0); //stop
+      delay(1000);
+      Dxl.goalSpeed(ID_NUM, 400); //forward
+      Dxl.goalSpeed(ID_NUM2, 0); //stop
+      delay(1000);
+    }
+  }
+}
