@@ -45,5 +45,13 @@ void loop(){
       Dxl.goalSpeed(ID_NUM2, 0); //stop
       delay(1000);
     }
+    else{
+      Dxl.goalSpeed(ID_NUM, 400); //forward
+      Dxl.goalSpeed(ID_NUM2, 400 | 0x400); //reverse
+    }
+  }
+  else{
+    Dxl.goalSpeed(ID_NUM, 400); //forward
+    Dxl.goalSpeed(ID_NUM2, 400 | 0x400); //reverse
   }
 }
