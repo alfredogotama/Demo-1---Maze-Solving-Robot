@@ -18,40 +18,44 @@ void setup() {
   Dxl.wheelMode(ID_NUM); //wheelMode() is to use wheel mode
   Dxl.wheelMode(ID_NUM2);
   myOLLO.begin(1);//DMS Module must be connected at port 1.
-  myOLLO.begin(1);
+  myOLLO.begin(3);//DMS Module must be connected at port 3.
 }
  
 void loop(){
-  SerialUSB.print("DMS Sensor ADC Value = ");
-  SerialUSB.println(myOLLO.read(1)); //read ADC value from OLLO port 1
-  SerialUSB.println(myOLLO.read(2));
-  
   Dxl.goalSpeed(ID_NUM, 400); //forward
-  Dxl.goalSpeed(ID_NUM2, 400 | 0x400); //reverse
+  Dxl.goalSpeed(ID_NUM2, 400 | 0x400); //forward
+  delay(1);
   
-  if(myOLLO.read(1) & 200){
-    Dxl.goalSpeed(ID_NUM, 0); //stop
-    Dxl.goalSpeed(ID_NUM2, 0); //stop
-    delay(1000);
-    Dxl.goalSpeed(ID_NUM, 400); //forward
-    Dxl.goalSpeed(ID_NUM2, 0); //stop
-    delay(1000);
-  
-    if(myOLLO.read(2) & 200){
-      Dxl.goalSpeed(ID_NUM, 0); //stop
-      Dxl.goalSpeed(ID_NUM2, 0); //stop
-      delay(1000);
-      Dxl.goalSpeed(ID_NUM, 400); //forward
-      Dxl.goalSpeed(ID_NUM2, 0); //stop
-      delay(1000);
+  if(myOLLO.read(1) > 2400){
+    if(myOLLO.read(3) >1900){
+    Dxl.goalSpeed(ID_NUM, 400 | 0x400); //reverse 
+    Dxl.goalSpeed(ID_NUM2, 400 | 0x400); //forward
+    delay(400);
     }
     else{
       Dxl.goalSpeed(ID_NUM, 400); //forward
-      Dxl.goalSpeed(ID_NUM2, 400 | 0x400); //reverse
+      Dxl.goalSpeed(ID_NUM2, 400); //reverse
+      delay(1);
     }
+  }
+  else if(myOLLO.read(3) > 1900){
+    Dxl.goalSpeed(ID_NUM, 400); //forward
+    Dxl.goalSpeed(ID_NUM2, 400 | 0x400); //forward
+    delay(1);
   }
   else{
     Dxl.goalSpeed(ID_NUM, 400); //forward
-    Dxl.goalSpeed(ID_NUM2, 400 | 0x400); //reverse
+    Dxl.goalSpeed(ID_NUM2, 400); //reverse
+    delay(1);
   }
+  
+  /* Dxl.goalSpeed(ID_NUM, 400); //forward
+  Dxl.goalSpeed(ID_NUM2, 400 | 0x400); //forward
+  delay(5000); 
+  Dxl.goalSpeed(ID_NUM, 0); //stop
+  Dxl.goalSpeed(ID_NUM2, 0); //stop
+  delay(2000);
+  Dxl.goalSpeed(ID_NUM, 400 | 0x400); //forward
+  Dxl.goalSpeed(ID_NUM2, 400 | 0x400); //reverse
+  delay(500); */
 }
