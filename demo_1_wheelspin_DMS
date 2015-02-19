@@ -48,14 +48,4 @@ void loop(){
     Dxl.goalSpeed(ID_NUM2, 400); //reverse
     delay(1);
   }
-  
-  /* Dxl.goalSpeed(ID_NUM, 400); //forward
-  Dxl.goalSpeed(ID_NUM2, 400 | 0x400); //forward
-  delay(5000); 
-  Dxl.goalSpeed(ID_NUM, 0); //stop
-  Dxl.goalSpeed(ID_NUM2, 0); //stop
-  delay(2000);
-  Dxl.goalSpeed(ID_NUM, 400 | 0x400); //forward
-  Dxl.goalSpeed(ID_NUM2, 400 | 0x400); //reverse
-  delay(500); */
 }
