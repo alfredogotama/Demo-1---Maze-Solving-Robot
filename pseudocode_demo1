@@ -1,0 +1,32 @@
+Initialize Dynamixel XL-320 on Serial Port (USART) OpenCM 9.04
+
+Initialize the first Dynamixel XL-320
+Initialize the second Dynamixel XL-320
+Include OLLO library for DMS-80
+
+Initialize dynamixel bus with baudrate: 1 Mbps
+  wheelMode on Dynamixel 1
+  wheelMode on Dynamixel 2
+DMS Module must be connected at port 1.
+DMS Module must be connected at port 3.
+
+
+Initialize robot’s movement (turning right)
+
+If distance of front DMS is less than 10 cm
+  If distance of right DMS is less than 14 cm
+    Robot turns left
+
+  Else
+
+    Robot turns right
+
+Else
+
+  If distance of right DMS Is less than 14 cm
+
+    Robots moves forward
+
+  Else
+
+    Robot turns right
